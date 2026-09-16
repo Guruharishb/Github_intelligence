@@ -4,8 +4,9 @@ import os
 load_dotenv()
 
 username="Guruharishb"
-user=get_User(username)
 
+token=os.getenv("GITHUB_TOKEN")
+user=get_User(username,token)
 
 
 if(user):
@@ -13,8 +14,8 @@ if(user):
     print("Public repositories:",user["public_repos"])
     print("Followers:",user["followers"])
     print()
-repositories=get_Repositories(username)
-if( repositories!=[]):
+repositories=get_Repositories(username,token)
+if(repositories):
     print("repositories")
-for repo in repositories:
-    print(repo["name"])
+    for repo in repositories:
+        print(repo["name"])

@@ -1,16 +1,39 @@
 import requests
 
-def get_User(username):
+def get_User(username,token):
     url=f"https://api.github.com/users/{username}"
-    response=requests.get(url)
-    if(response.status_code == 200):
+    headers = {
+        "Authorization": f"Bearer {token}",
+        "Accept": "application/vnd.github+json"
+    }
+    try:
+        response=requests.get(url,
+                              headers=headers,
+                              timeout=10,
+                              )
+        response.raise_for_status()
         return response.json()
-    return None
+    except requests.RequestException:
+        return None
 
-def get_Repositories(username):
+def get_Repositories(username,token):
     url=f"https://api.github.com/users/{username}/repos"
-    response=requests.get(url)
-    if(response.status_code==200):
+    params={
+        "per_page":10,
+        "sort":"updated"
+    }
+    headers = {
+        "Authorization": f"Bearer {token}",
+        "Accept": "application/vnd.github+json"
+    }
+
+    try:
+        response=requests.get(url,
+                              headers=headers,
+                              timeout=10,
+                              params=params)
+        response.raise_for_status()
         return response.json()
-    return []
+    except requests.RequestException:
+        return []
     
